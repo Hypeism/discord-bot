@@ -8,6 +8,7 @@ import Logger from './lib/logger';
 import express from 'express';
 import { readdirSync } from 'fs';
 import { join } from 'path';
+import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
 const apm = start({
@@ -18,12 +19,14 @@ const apm = start({
 export const DEBUG_MODE = process.env.DEBUG_MODE === 'true';
 
 const intents = new Discord.Intents(32767);
-const client = new Discord.Client({
+export const client = new Discord.Client({
     partials: ['USER', 'CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION'],
     intents,
 });
 
 let healthy = false;
+
+
 
 client.on('ready', () => {
     Logger.info(`Logged in as ${client.user.tag}!`);
